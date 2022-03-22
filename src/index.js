@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import {
@@ -9,6 +8,9 @@ import {
   ApolloProvider
 } from "@apollo/client";
 import Router from './router';
+import Layout from './Layout';
+import './styles/global.css';
+import { HeaderProvider } from './context/headerContext';
 
 const client = new ApolloClient({
   uri: 'https://graphql.sketch.cloud/api',
@@ -17,11 +19,15 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
+  <HeaderProvider>
     <React.StrictMode>
         <BrowserRouter>
-          <Router />
+          <Layout >
+            <Router />
+          </Layout>
         </BrowserRouter>
     </React.StrictMode>
+    </HeaderProvider>
   </ApolloProvider>,
   document.getElementById('root')
 );
