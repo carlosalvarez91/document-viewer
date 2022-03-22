@@ -8,7 +8,7 @@ import {
   InMemoryCache,
   ApolloProvider
 } from "@apollo/client";
-import Router from './Router';
+import Router from './router';
 
 const client = new ApolloClient({
   uri: 'https://graphql.sketch.cloud/api',

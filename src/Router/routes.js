@@ -1,7 +1,11 @@
-import Main from "../Main";
+import MainScreen from "../screens/MainScreen";
+import DocumentScreen from "../screens/DocumentScreen";
+import ArtboardScreen from "../screens/ArtboardScreen";
 
 const routes = [
-  {element: <Main />, path: "/"}
+  {element: <MainScreen /> , path: "/"},
+  {element: <DocumentScreen /> , path: "document/:documentId"},
+  {element: <ArtboardScreen /> , path: "document/:documentId/artboard/:artboardId"}
 ];
 
 export default routes;
