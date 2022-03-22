@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { BrowserRouter } from "react-router-dom";
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider
 } from "@apollo/client";
+import Router from './Router';
 
 const client = new ApolloClient({
   uri: 'https://graphql.sketch.cloud/api',
@@ -17,11 +17,11 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-  <React.StrictMode>
-   
-      <App />
-    
-  </React.StrictMode>
+    <React.StrictMode>
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+    </React.StrictMode>
   </ApolloProvider>,
   document.getElementById('root')
 );
