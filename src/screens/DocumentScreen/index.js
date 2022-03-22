@@ -1,9 +1,7 @@
-import {
-    useQuery,
-    gql
-  } from "@apollo/client";
-  
-  export const GET_ARTBOARDS = gql`
+import { useQuery, gql } from "@apollo/client";
+import { useParams } from "react-router-dom";
+
+export const GET_ARTBOARDS = gql`
   query getArtboards($documentId: ID!) {
     share(id: $documentId) {
       identifier
@@ -34,9 +32,9 @@ import {
   `;
 
 function DocumentScreen() {
-  
+    const { documentId } = useParams();
     const { loading, error, data } = useQuery(GET_ARTBOARDS, {
-      variables: { documentId: "e981971c-ff57-46dc-a932-a60dc1804992" },
+      variables: { documentId },
     });
   
     if (loading) return <p>Loading...</p>;
@@ -47,7 +45,7 @@ function DocumentScreen() {
   
      console.log(data)
   
-    return "working";
+    return "DocumentScreen";
   }
   
   export default DocumentScreen;
