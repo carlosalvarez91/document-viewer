@@ -5,7 +5,7 @@ import ArtboardScreen from "../screens/ArtboardScreen";
 const routes = [
   {element: <MainScreen /> , path: "/"},
   {element: <DocumentScreen /> , path: "document/:documentId"},
-  {element: <ArtboardScreen /> , path: "document/:documentId/artboard/:artboardId"}
+  {element: <ArtboardScreen /> , path: "document/:documentId/artboard/:artboardIndex"}
 ];
 
 export default routes;
