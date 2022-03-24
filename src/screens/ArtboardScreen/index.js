@@ -3,51 +3,30 @@ import { HeaderContext } from '../../context/headerContext';
 import { ArtboardHeader } from '../../components/header/ArtBoardHeader';
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import { QUERY_ARTBOARDS } from '../../graphql';
 
-
-export const GET_ARTBOARDS = gql`
-  query getArtboards($documentId: ID!) {
-    share(id: $documentId) {
-      identifier
-      version {
-        document {
-          name
-          artboards {
-            entries {
-              name
-              isArtboard
-              files {
-                url
-                height
-                width
-                scale
-                thumbnails {
-                  url
-                  height
-                  width
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  `;
 
 export default function ArtboardScreen(){
-
     const {setHeader} = useContext(HeaderContext)
     const { documentId, artboardIndex } = useParams();
 
-    const { loading, error, data } = useQuery(GET_ARTBOARDS, {
+    const { loading, error, data } = useQuery(QUERY_ARTBOARDS, {
         variables: { documentId },
       });
 
     useEffect(() => {
-        setHeader("artboard header")
-    }, [])
+      if (data){
+        const artboards = data.share.version.document.artboards.entries
+        const currentArtboard = artboards[artboardIndex]
+        setHeader(<ArtboardHeader
+                    documentId={documentId}
+                    artboardsLength={artboards.length}
+                    currentIndex={parseInt(artboardIndex)}
+                    name={currentArtboard.name}
+                  />)
+      }
+    }, [data, artboardIndex])
 
     if (loading) return <p>Loading...</p>;
     if (error){
@@ -55,20 +34,18 @@ export default function ArtboardScreen(){
         return <p>Error</p>
       };
 
-    const documents = data.share.version.document.artboards.entries
-    const artboard = documents[artboardIndex]
-    const artboardUrl = artboard.files[0].url;
-
-    return (
-      <ImageWrapper>
-        <Image
-          src={artboardUrl}
-          width="100%"
-          height="auto"
-          alt={artboard.name || "Artboard"}
-        />
-      </ImageWrapper>
-    );
+    const artboards = data.share.version.document.artboards.entries
+    const currentArtboard = artboards[artboardIndex]
+    
+    return <ImageWrapper>
+            <Image
+              src={currentArtboard.files[0].url}
+              width="100%"
+              height="auto"
+              alt={currentArtboard.name || "Artboard"}
+            />
+          </ImageWrapper>
+    
 }
 
 const ImageWrapper = styled.div`

@@ -1,41 +1,11 @@
 import {useContext, useEffect} from 'react';
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { HeaderContext } from "../../context/headerContext";
 import DocumentHeader from '../../components/header/DocumentHeader';
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
-
-export const GET_ARTBOARDS = gql`
-  query getArtboards($documentId: ID!) {
-    share(id: $documentId) {
-      identifier
-      version {
-        document {
-          name
-          artboards {
-            entries {
-              name
-              isArtboard
-              files {
-                url
-                height
-                width
-                scale
-                thumbnails {
-                  url
-                  height
-                  width
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  `;
+import { QUERY_ARTBOARDS } from '../../graphql';
 
 const StyledLink = styled(Link)`
   display: flex;
@@ -47,7 +17,7 @@ function DocumentScreen() {
     const {setHeader} = useContext(HeaderContext)
 
     const { documentId } = useParams();
-    const { loading, error, data } = useQuery(GET_ARTBOARDS, {
+    const { loading, error, data } = useQuery(QUERY_ARTBOARDS, {
       variables: { documentId },
     });
 
@@ -62,15 +32,12 @@ function DocumentScreen() {
         console.error(error)
         return <p>Error</p>
       };
-
-    console.log(data)
     
     const artboards = data.share.version.document.artboards.entries.filter((entry) => entry.isArtboard)
     
     return <List>
             {artboards.map(({ name, files }, index) => {
-              const thumbnail =
-                files[0]?.thumbnails[1]?.url || files[1]?.thumbnail[1]?.url || "";
+              const thumbnail = files[0]?.thumbnails[1]?.url || files[1]?.thumbnail[1]?.url || "";
               return (
                 <StyledLink key={`link-${index}`} to={`artboard/${index}`}>
                   <ArtboardPreview
