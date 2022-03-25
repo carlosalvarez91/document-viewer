@@ -7,6 +7,7 @@ display: flex;
 flex-direction: column;
 justify-content: space-between;
 cursor:pointer;
+width:${(props) => props.width || '100%'};
 
 & > div {
   display: flex;
@@ -15,12 +16,12 @@ cursor:pointer;
 }
 `;
 
-export default function ArtboardThumbnail({ name, thumbnail }) {
+export default function Thumbnail({ name, source, width }) {
 return (
-    <StyledPreview>
+    <StyledPreview width={width}>
       <div>
         <img
-          src={thumbnail}
+          src={source}
           alt={`${name} preview`}
           width="100%"
           height="auto"

@@ -3,18 +3,11 @@ import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { HeaderContext } from "../../context/headerContext";
 import DocumentHeader from '../../components/header/DocumentHeader';
-import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { QUERY_ARTBOARDS } from '../../graphql';
 import { Spinner } from '../../assets';
-import ArtboardThumbnail from '../../components/ArtboardThumbnail';
 import ArtboardList from '../../components/ArtboardList';
-
-const StyledLink = styled(Link)`
-  display: flex;
-  color: inherit;
-  text-decoration: none;
-`;
+import Thumbnail from '../../components/Thumbnail';
+import StyledLink from '../../components/StyledLink';
 
 
 function DocumentScreen() {
@@ -41,12 +34,12 @@ function DocumentScreen() {
     
     return <ArtboardList>
             {artboards.map(({ name, files }, index) => {
-              const thumbnail = files[0]?.thumbnails[1]?.url || files[1]?.thumbnail[1]?.url || "";
+              const source = files[0]?.thumbnails[1]?.url || files[1]?.thumbnail[1]?.url || "";
               return (
                 <StyledLink key={`link-${index}`} to={`artboard/${index}`}>
-                  <ArtboardThumbnail
+                  <Thumbnail
                     name={name}
-                    thumbnail={thumbnail}
+                    source={source}
                   />
                 </StyledLink>
               );
