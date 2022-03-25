@@ -1,14 +1,17 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
 import {
   CloseIcon,
-  Separator,
   Previous,
   Next,
   BreadCrumb,
 } from "../../assets";
+import Separator from "../Separator";
 
+/**
+ * Ideally this set of small components should be placed in separate files
+ * but since they are not going to be reused they are ok here :)
+ */
 
 const StyledLink = styled(Link)`
   display: flex;
@@ -26,25 +29,13 @@ function IconLink({ url, icon, ariaLabel }) {
   );
 }
 
-const StyledHeading = styled.h1`
+const Heading = styled.h1`
   color: var(--color-black);
   margin: 0};
   font-size: 18px;
   flex: 1;
   text-align: center;
 `;
-
-function Heading({ children }) {
-  
-  return (
-    <StyledHeading>
-      {children}
-    </StyledHeading>
-  );
-}
-
-export default Heading;
-
 
 const Container = styled.div`
   display: flex;
@@ -66,10 +57,6 @@ const LinksWrapper = styled.div`
   }
 `;
 
-const PreviousLinkWrapper = styled.div`
-  min-width: 48px;
-`;
-
 const ParagraphWrapper = styled.div`
   font-size: 14px;
   color: rgba(0, 0, 0, 0.5);
@@ -84,10 +71,8 @@ const ParagraphWrapper = styled.div`
 
 export function ArtboardHeader({ documentId, currentIndex, artboardsLength, name }) {
 
-  const nextIndex = currentIndex + 1;
-  const previousIndex = currentIndex - 1;
-  const isFirstArtboard = currentIndex === 0;
-  const isLastArtboard = currentIndex === artboardsLength - 1;
+  const next = currentIndex + 1;
+  const prev = currentIndex - 1;
 
   return (
     <Container>
@@ -98,23 +83,23 @@ export function ArtboardHeader({ documentId, currentIndex, artboardsLength, name
           ariaLabel={"Return to document view"}
         />
         <Separator />
-        <PreviousLinkWrapper>
-          {!isFirstArtboard && (
+        <div>
+          {!currentIndex === 0 && (
             <IconLink
-              url={`/document/${documentId}/artboard/${previousIndex}`}
+              url={`/document/${documentId}/artboard/${prev}`}
               ariaLabel={"Previous artboard"}
               icon={<Previous />}
             />
           )}
-        </PreviousLinkWrapper>
+        </div>
         <ParagraphWrapper>
           <p>{currentIndex + 1}</p>
           <BreadCrumb />
           <p>{artboardsLength}</p>
         </ParagraphWrapper>
-        {!isLastArtboard && (
+        {!currentIndex === artboardsLength - 1 && (
           <IconLink
-            url={`/document/${documentId}/artboard/${nextIndex}`}
+            url={`/document/${documentId}/artboard/${next}`}
             icon={<Next />}
             ariaLabel={"Next artboard"}
           />

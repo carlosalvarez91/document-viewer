@@ -6,12 +6,16 @@ import DocumentHeader from '../../components/header/DocumentHeader';
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { QUERY_ARTBOARDS } from '../../graphql';
+import { Spinner } from '../../assets';
+import ArtboardThumbnail from '../../components/ArtboardThumbnail';
+import ArtboardList from '../../components/ArtboardList';
 
 const StyledLink = styled(Link)`
   display: flex;
   color: inherit;
   text-decoration: none;
 `;
+
 
 function DocumentScreen() {
     const {setHeader} = useContext(HeaderContext)
@@ -27,7 +31,7 @@ function DocumentScreen() {
       }
     }, [data])
   
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Spinner/>;
     if (error){
         console.error(error)
         return <p>Error</p>
@@ -35,72 +39,19 @@ function DocumentScreen() {
     
     const artboards = data.share.version.document.artboards.entries.filter((entry) => entry.isArtboard)
     
-    return <List>
+    return <ArtboardList>
             {artboards.map(({ name, files }, index) => {
               const thumbnail = files[0]?.thumbnails[1]?.url || files[1]?.thumbnail[1]?.url || "";
               return (
                 <StyledLink key={`link-${index}`} to={`artboard/${index}`}>
-                  <ArtboardPreview
+                  <ArtboardThumbnail
                     name={name}
                     thumbnail={thumbnail}
                   />
                 </StyledLink>
               );
             })}
-          </List>;
+          </ArtboardList>;
   }
   
   export default DocumentScreen;
-
-
-  const List = styled.ul`
-  display: flex;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  flex-wrap: wrap;
-  max-width: var(--max-width-content);
-  justify-content: space-between;
-
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
-
-  & li {
-    padding: 24px;
-    display: flex;
-  }
-`;
-  
-
-
-
-const StyledPreview = styled.div`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor:pointer;
-
-  & > div {
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-  }
-`;
-
-function ArtboardPreview({ name, thumbnail }) {
-  return (
-      <StyledPreview>
-        <div>
-          <img
-            src={thumbnail}
-            alt={`${name} preview`}
-            width="100%"
-            height="auto"
-          />
-        </div>
-        <p>{name}</p>
-      </StyledPreview>
-  );
-}

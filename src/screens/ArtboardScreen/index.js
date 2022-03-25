@@ -5,6 +5,21 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
 import { QUERY_ARTBOARDS } from '../../graphql';
+import { Spinner } from '../../assets';
+
+const ArtboardImageWrapper = styled.div`
+  max-height: calc(100vh - var(--min-header-height));
+  display: flex;
+  padding: 32px;
+
+  @media (max-width: 425px) {
+    margin-top: var(--min-header-height);
+  }
+`;
+
+const ArtboardImage = styled.img`
+  object-fit: contain;
+`;
 
 
 export default function ArtboardScreen(){
@@ -28,7 +43,7 @@ export default function ArtboardScreen(){
       }
     }, [data, artboardIndex])
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Spinner/>;
     if (error){
         console.error(error)
         return <p>Error</p>
@@ -37,28 +52,15 @@ export default function ArtboardScreen(){
     const artboards = data.share.version.document.artboards.entries
     const currentArtboard = artboards[artboardIndex]
     
-    return <ImageWrapper>
-            <Image
+    return <ArtboardImageWrapper>
+            <ArtboardImage
               src={currentArtboard.files[0].url}
               width="100%"
               height="auto"
               alt={currentArtboard.name || "Artboard"}
             />
-          </ImageWrapper>
+          </ArtboardImageWrapper>
     
 }
 
-const ImageWrapper = styled.div`
-  max-height: calc(100vh - var(--min-header-height));
-  display: flex;
-  padding: 32px;
-
-  @media (max-width: 425px) {
-    margin-top: var(--min-header-height);
-  }
-`;
-
-const Image = styled.img`
-  object-fit: contain;
-`;
 
