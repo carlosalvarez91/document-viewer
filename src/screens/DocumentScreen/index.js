@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { HeaderContext } from "../../context/headerContext";
 import DocumentHeader from '../../components/header/DocumentHeader';
-import { QUERY_ARTBOARDS } from '../../graphql';
+import { QUERY_ARTBOARDS } from '../../graphql/queries';
 import { Spinner } from '../../assets';
 import ArtboardList from '../../components/ArtboardList';
 import Thumbnail from '../../components/Thumbnail';

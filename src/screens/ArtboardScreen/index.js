@@ -4,7 +4,7 @@ import { ArtboardHeader } from '../../components/header/ArtBoardHeader';
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
-import { QUERY_ARTBOARDS } from '../../graphql';
+import { QUERY_ARTBOARDS } from '../../graphql/queries';
 import { Spinner } from '../../assets';
 
 const ArtboardImageWrapper = styled.div`
